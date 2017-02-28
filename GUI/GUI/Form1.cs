@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
+using Speliotojas;
 
 namespace GUI
 {
@@ -179,6 +180,11 @@ namespace GUI
             }
             zaidimas = false;
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //Speliotojas.Speliotojas.gautAtsakyma(false,"bezdžionė"); //cia bandziau ar veikia gerai, ats kaip ir gerai
         }
     }
 }

@@ -67,11 +67,16 @@ namespace Speliotojas
             return string.Empty;
         }
 
+        /// <summary>
+        /// Išsaugo žodį ir atnaujina raidziu lentele
+        /// </summary>
+        /// <param name="pasisekimas"></param>
+        /// <param name="spejamasZodis"></param>
         public static void gautAtsakyma(bool pasisekimas, string spejamasZodis)
         {
-            //išsaugoti duombazėn čia turėtu
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\Zodziai.mdf;Integrated Security=True;Connect Timeout=30";
-            string query = "exec AtnaujintiKiekius";
+            string atnaujint = "exec AtnaujintiKiekius";
+            string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
             DataTable tbl = new DataTable();
             try
             {
@@ -81,10 +86,16 @@ namespace Speliotojas
 
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = query;
+                        cmd.CommandText = irasytZodi;
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             da.Fill(tbl);
+                        }
+
+                        cmd.CommandText = atnaujint;
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            da.Fill(tbl); // <-- nors ner ka pildyt, vistiek reikia kad suveiktu procedura
                         }
                     }
                 }
