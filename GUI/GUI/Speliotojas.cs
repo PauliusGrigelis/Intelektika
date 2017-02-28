@@ -76,7 +76,8 @@ namespace Speliotojas
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\Zodziai.mdf;Integrated Security=True;Connect Timeout=30";
             string atnaujint = "exec AtnaujintiKiekius";
-            string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
+            //string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
+            string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'"; //exec IterptZodiIrSekme false , N'niekas'
             DataTable tbl = new DataTable();
             try
             {
