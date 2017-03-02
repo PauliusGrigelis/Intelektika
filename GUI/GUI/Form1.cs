@@ -51,7 +51,7 @@ namespace GUI
         {
             while (zaidimas)
             {
-                testavimoZaidimas(zodis);
+                apdorojamasSpejimas(zodis, testavimoZaidimas());
             }
         }
 
@@ -85,7 +85,51 @@ namespace GUI
             pictureBox1.Visible = false;
         }
 
-        private void testavimoZaidimas(Zodis zodis)
+        private void apdorojamasSpejimas(Zodis zodis, char spejimas)
+        {
+            busena = 0;
+            animacija();
+            Thread.Sleep(2000); //tipo galvoja
+            if (zodis.spejimas(spejimas))
+            {
+                this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.atvaizdavimas(); }));
+                if (!zodis.arAtspejoZodi())
+                {
+                    busena = 1;
+                    animacija();
+                    //ka pasakyti ai?
+                }
+                else //zaidimas baigtas, AI laimejo
+                {
+                    Debug.Write("pergale");
+                    zaidimas = false;
+                    //ideti animacija, ar kaip kitaip atvaizduoti pergale
+                    //duomenu irasymas?
+                }
+            }
+            else
+            {
+                gyvybes--;
+                this.BeginInvoke(new MethodInvoker(() => { label3.Text = gyvybes.ToString(); }));
+                if (gyvybes != 0) //zaidimas baigtas - AI pralaimejo
+                {
+                    busena = 2;
+                    animacija();
+                }
+                else
+                {
+                    Debug.Write("pralaimejimas");
+                    zaidimas = false;
+                    //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
+                    //duomenu irasymas?
+                }
+            }
+            Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
+        }
+
+
+        List<char> speta = new List<char>(); //testavimui
+        private char testavimoZaidimas() //nesamone, bet tik testavimui
         {
             List<char> spejimai = new List<char>();
             spejimai.Add('a');
@@ -96,51 +140,9 @@ namespace GUI
             spejimai.Add('x');
             spejimai.Add('z');
             spejimai.Add('l');
-
-            foreach(char c in spejimai)
-            {
-                busena = 0;
-                animacija();
-                Thread.Sleep(2000); //tipo galvoja
-                if (zodis.spejimas(c))
-                {
-                    this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.atvaizdavimas(); }));
-                    if (!zodis.arAtspejoZodi())
-                    {
-                        busena = 1;
-                        animacija();
-                        //ka pasakyti ai?
-                    }
-                    else //zaidimas baigtas, AI laimejo
-                    {
-                        Debug.Write("pergale");
-                        zaidimas = false;
-                        //ideti animacija, ar kaip kitaip atvaizduoti pergale
-                        //duomenu irasymas?
-                        break;
-                    }
-                }
-                else
-                {
-                    gyvybes--;
-                    this.BeginInvoke(new MethodInvoker(() => { label3.Text = gyvybes.ToString(); }));
-                    if (gyvybes != 0) //zaidimas baigtas - AI pralaimejo
-                    {
-                        busena = 2;
-                        animacija();
-                    }
-                    else
-                    {
-                        Debug.Write("pralaimejimas");
-                        zaidimas = false;
-                        //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
-                        //duomenu irasymas?
-                        break;
-                    }
-                }
-                Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
-            }
-            zaidimas = false;
+            foreach (char c in spejimai)
+                if (!speta.Contains(c)) { speta.Add(c); return c; }
+            return 'o';
         }
 
         private void button2_Click(object sender, EventArgs e)

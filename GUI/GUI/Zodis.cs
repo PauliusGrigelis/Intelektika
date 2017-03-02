@@ -22,15 +22,18 @@ namespace GUI
 
         public bool spejimas(char spejimas)
         {
+            bool atspejo = false;
             for(int i=0; i<zodis.Length; i++)
             {
                 if(zodis[i] == spejimas)
                 {
                     pasleptoZodzioRaidziuSarasas[i] = spejimas;
                     konvertavimas();
-                    return true;
+                    atspejo = true;
                 }
             }
+            if(atspejo)
+                return true;
             return false;
         }
 
