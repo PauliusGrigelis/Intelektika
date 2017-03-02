@@ -26,7 +26,7 @@ namespace GUI
         }
         bool zaidimas = false;
         int busena = 0;
-        int gyvybes = 5;
+        int gyvybes;
         private void button1_Click(object sender, EventArgs e)
         {
             if (textBox1.Text.Length > 0) //input apribojimai
@@ -36,6 +36,8 @@ namespace GUI
                 
                 //pradedamas zaidimas
                 zaidimas = true;
+                gyvybes = 5;
+                label3.Text = gyvybes.ToString();
                 Task zaisti = new Task(() => pradeti(zodis));
                 //Task animuoti = new Task(() => animacija());
                 zaisti.Start();
@@ -93,6 +95,7 @@ namespace GUI
             if (zodis.spejimas(spejimas))
             {
                 this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.atvaizdavimas(); }));
+                this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("Atspėjo: " + spejimas + "\r\n"); }));
                 if (!zodis.arAtspejoZodi())
                 {
                     busena = 1;
@@ -101,6 +104,7 @@ namespace GUI
                 }
                 else //zaidimas baigtas, AI laimejo
                 {
+                    this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI laimėjo.\r\n"); }));
                     Debug.Write("pergale");
                     zaidimas = false;
                     //ideti animacija, ar kaip kitaip atvaizduoti pergale
@@ -111,6 +115,7 @@ namespace GUI
             {
                 gyvybes--;
                 this.BeginInvoke(new MethodInvoker(() => { label3.Text = gyvybes.ToString(); }));
+                this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("Neatspėjo: " + spejimas + "\r\n"); }));
                 if (gyvybes != 0) //zaidimas baigtas - AI pralaimejo
                 {
                     busena = 2;
@@ -118,6 +123,7 @@ namespace GUI
                 }
                 else
                 {
+                    this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI pralaimėjo.\r\n"); }));
                     Debug.Write("pralaimejimas");
                     zaidimas = false;
                     //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
@@ -145,10 +151,25 @@ namespace GUI
             return 'o';
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        bool atidarytasLogas = false;
+        Point pozicijaAtidariusLoga = new Point(27, 211);
+        Point pozicijaUzdariusLoga = new Point(27, 297);
+        private void button3_Click(object sender, EventArgs e)
         {
-            //Speliotojas.Speliotojas.gautAtsakyma(false,"bezdžionė"); //cia bandziau ar veikia gerai, ats kaip ir gerai
-            Speliotojas.Speliotojas.gautAtsakyma(false,textBox1.Text);
+            if (!atidarytasLogas)
+            {
+                button3.BackgroundImage = Image.FromFile(".\\..\\..\\src\\grey-button-close.png");
+                button3.Location = pozicijaAtidariusLoga;
+                textBox3.Visible = true;
+                atidarytasLogas = true;
+            }
+            else
+            {
+                button3.BackgroundImage = Image.FromFile(".\\..\\..\\src\\grey-button-open.png");
+                button3.Location = pozicijaUzdariusLoga;
+                textBox3.Visible = false;
+                atidarytasLogas = false;
+            }
         }
     }
 }
