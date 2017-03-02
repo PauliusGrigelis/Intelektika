@@ -50,5 +50,14 @@ namespace GUI
                 dto += c + " ";
             return dto;
         }
+
+        public bool arAtspejoZodi()
+        {
+            if(zodis == pasleptasZodis)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

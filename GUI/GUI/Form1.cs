@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 using Speliotojas;
+using System.Diagnostics;
 
 namespace GUI
 {
@@ -25,6 +26,7 @@ namespace GUI
         }
         bool zaidimas = false;
         int busena = 0;
+        int gyvybes = 5;
         private void button1_Click(object sender, EventArgs e)
         {
             if (textBox1.Text.Length > 0) //input apribojimai
@@ -49,11 +51,7 @@ namespace GUI
         {
             while (zaidimas)
             {
-                //Thread.Sleep(2000);
-                //Random rng = new Random();
-                //busena = rng.Next(0, 3);
-                //testavimoZaidimas(zodis);
-                ai(zodis);
+                testavimoZaidimas(zodis);
             }
         }
 
@@ -64,15 +62,18 @@ namespace GUI
 
                 if (busena == 0) //galvoja
                 {
-                    pictureBox1.Image = Image.FromFile(".\\..\\..\\src\\ajax-loader.gif");
+                    this.BeginInvoke(new MethodInvoker(()=> { pictureBox1.Visible = true; }));
+                    pictureBox2.Image = Image.FromFile(".\\..\\..\\src\\homer_simpson_thinking.png");
                 }
                 else if (busena == 1) //atspejo
                 {
-                    pictureBox1.Image = Image.FromFile(".\\..\\..\\src\\check2.png");
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = false; }));
+                    pictureBox2.Image = Image.FromFile(".\\..\\..\\src\\Homer_simpsonwoohooo.gif");
                 }
                 else //neatspejo
                 {
-                    pictureBox1.Image = Image.FromFile(".\\..\\..\\src\\X.gif");
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = false; }));
+                    pictureBox2.Image = Image.FromFile(".\\..\\..\\src\\Homer_simpsondoh.png");
                 }
             }
             catch { }
@@ -80,7 +81,8 @@ namespace GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //animacijos ar dar kas
+            pictureBox1.Image = Image.FromFile(".\\..\\..\\src\\ajax-loader.gif");
+            pictureBox1.Visible = false;
         }
 
         private void testavimoZaidimas(Zodis zodis)
@@ -102,84 +104,43 @@ namespace GUI
                 Thread.Sleep(2000); //tipo galvoja
                 if (zodis.spejimas(c))
                 {
-                    busena = 1;
-                    animacija();
                     this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.atvaizdavimas(); }));
+                    if (!zodis.arAtspejoZodi())
+                    {
+                        busena = 1;
+                        animacija();
+                        //ka pasakyti ai?
+                    }
+                    else //zaidimas baigtas, AI laimejo
+                    {
+                        Debug.Write("pergale");
+                        zaidimas = false;
+                        //ideti animacija, ar kaip kitaip atvaizduoti pergale
+                        //duomenu irasymas?
+                        break;
+                    }
                 }
                 else
                 {
-                    busena = 2;
-                    animacija();
+                    gyvybes--;
+                    this.BeginInvoke(new MethodInvoker(() => { label3.Text = gyvybes.ToString(); }));
+                    if (gyvybes != 0) //zaidimas baigtas - AI pralaimejo
+                    {
+                        busena = 2;
+                        animacija();
+                    }
+                    else
+                    {
+                        Debug.Write("pralaimejimas");
+                        zaidimas = false;
+                        //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
+                        //duomenu irasymas?
+                        break;
+                    }
                 }
                 Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
             }
             zaidimas = false;
-        }
-
-        private void ai(Zodis zodis)
-        {
-            List<object> spejimai = new List<object>();
-            spejimai.Add(new { raide = 'c', kiekis = 3 });
-            spejimai.Add(new {raide = 'a', kiekis = 10 });
-            spejimai.Add(new { raide = 'g', kiekis = 1 });
-            spejimai.Add(new { raide = 'h', kiekis = 0 });
-            spejimai.Add(new { raide = 'v', kiekis = 5 });
-            spejimai.Add(new { raide = 'x', kiekis = 0 });
-            spejimai.Add(new { raide = 'z', kiekis = 4 });
-            spejimai.Add(new { raide = 'l', kiekis = 6 });
-
-            List<object> speta = new List<object>();
-            var temp = new
-                {
-                    raide = 'a',
-                    kiekis = 10
-                };
-            for (int j = 0; j<spejimai.Count; j++)
-            {
-                for (int x = 0; x < spejimai.Count; x++)
-                {
-                    while (true)
-                    {
-                        temp = new
-                        {
-                            raide = (char)spejimai[j].GetType().GetProperty("raide").GetValue(spejimai[j], null),
-                            kiekis = (int)spejimai[j].GetType().GetProperty("kiekis").GetValue(spejimai[j], null)
-                        };
-                        if (!speta.Contains(temp))
-                            break;
-                    }
-                }
-                for (int i = 0; i < spejimai.Count; i++)
-                {
-                    if (!speta.Contains(spejimai[i]) && temp.kiekis < (int)spejimai[i].GetType().GetProperty("kiekis").GetValue(spejimai[i], null))
-                    {
-                        temp = new
-                        {
-                            raide = (char)spejimai[i].GetType().GetProperty("raide").GetValue(spejimai[i], null),
-                            kiekis = (int)spejimai[i].GetType().GetProperty("kiekis").GetValue(spejimai[i], null)
-                        };
-                    }
-                }
-
-
-                busena = 0;
-                animacija();
-                Thread.Sleep(2000); //tipo galvoja
-                if (zodis.spejimas(temp.raide))
-                {
-                    busena = 1;
-                    animacija();
-                    this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.atvaizdavimas(); }));
-                }
-                else
-                {
-                    busena = 2;
-                    animacija();
-                }
-                Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
-            }
-            zaidimas = false;
-
         }
 
         private void button2_Click(object sender, EventArgs e)
