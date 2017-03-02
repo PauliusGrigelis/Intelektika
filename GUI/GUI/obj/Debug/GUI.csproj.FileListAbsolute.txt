@@ -20,3 +20,4 @@ C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\obj\Debug\GUI.c
 C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\obj\Debug\GUI.Form1.resources
 C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\obj\Debug\GUI.Properties.Resources.resources
 C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\obj\Debug\GUI.csproj.GenerateResource.Cache
+C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\bin\Debug\Zodziai_log.ldf
