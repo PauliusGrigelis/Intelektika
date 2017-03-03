@@ -74,7 +74,8 @@ namespace Speliotojas
         /// <param name="spejamasZodis"></param>
         public static void gautAtsakyma(bool pasisekimas, string spejamasZodis)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\Zodziai.mdf;Integrated Security=True;Connect Timeout=30";
+            //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\Zodziai.mdf;Integrated Security=True;Connect Timeout=30";
+            string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\Paulius\Desktop\Kartuves\GUI\GUI\Zodziai.mdf; Integrated Security = True";
             string atnaujint = "exec AtnaujintiKiekius";
             //string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
             string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'"; //exec IterptZodiIrSekme false , N'niekas'
