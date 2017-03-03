@@ -19,7 +19,7 @@ namespace Speliotojas
         /// <summary>
         /// Dar tuscias metodas, veliau jis turetu priimti masyva raidziu ar kokia struktura (in development)
         /// </summary>
-        /// <returns>Grazina spejiama raide</returns>
+        /// <returns>Grazina spejama raide</returns>
         public static char spekRaide()
         {
             string bandytosRaides = string.Empty;
