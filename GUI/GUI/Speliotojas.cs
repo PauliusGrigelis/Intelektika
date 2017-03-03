@@ -4,33 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-//using System.Data.DataTable;
-//using System.Data.SqlClient;
 
 namespace Speliotojas
 {
     public static class Speliotojas
     {
-        private static int spejimuKiekis = 0;
+        private static char spejamaRaide;
         private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
-
-        /// <summary>
-        /// Pradedami spejimai su siuo metodu (in development)
-        /// </summary>
-        /// <param name="speliojimuKiekis">Nustatomas sio speliojimo seanso spejimu kiekis</param>
-        public static void pradetSpeliot(int speliojimuKiekis)
-        {
-            if(spejimuKiekis > 0)
-            {
-                throw new Exception("Spėliojimas dar nebaigtas");
-            }
-            if(speliojimuKiekis <= 0)
-            {
-                throw new Exception("Mėginamas nustatyti neigiamas ar nulinis spėjimų kiekis");
-            }
-            spejimuKiekis = speliojimuKiekis;
-        }
+        private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\Zodziai.mdf;Integrated Security=True;Connect Timeout=30";
+        //private static string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\Paulius\Desktop\Kartuves\GUI\GUI\Zodziai.mdf; Integrated Security = True";
+        
 
         /// <summary>
         /// Dar tuscias metodas, veliau jis turetu priimti masyva raidziu ar kokia struktura (in development)
@@ -38,24 +22,43 @@ namespace Speliotojas
         /// <returns>Grazina spejiama raide</returns>
         public static char spekRaide()
         {
-            if (spejimuKiekis == 0)
+            string bandytosRaides = string.Empty;
+            foreach(char raide in atspetos_raides)
             {
-                throw new Exception("Spėjimai baigėsi,\r\nŽaidimo pabaiga");
+                bandytosRaides += raide;
             }
-            spejimuKiekis--;
-            return ' ';
-        }
+            foreach (char raide in neatspetos_raides)
+            {
+                bandytosRaides += raide;
+            }
+            if(bandytosRaides == string.Empty)
+            {
+                bandytosRaides = "''";
+            }
 
-        /// <summary>
-        /// Speliojimu uzbaigimas, gal is GVSo puses bus koks spejimu uzbaigimas kad vartotojas galetu ivesti nauja zodi (in development)
-        /// </summary>
-        public static void baigtSpeliot()
-        {
-            if (spejimuKiekis == 0)
+            string gautRaide = "SELECT top 1 Raide from dbo.Raides where Raide not in ("+ bandytosRaides + ") order by NEWID()";
+            //string gautRaide = "exec GautRandomRaide " + bandytosRaides; //SELECT top 1 Raide from dbo.Raides where Raide not in (@raides) order by NEWID()
+
+            DataTable tbl = new DataTable();
+            try
             {
-                throw new Exception("Spėjimų nebeliko,\r\nNegalima nutraukti spėjimų kiekio");
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = gautRaide;
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            da.Fill(tbl);
+                        }
+                    }
+                }
             }
-            spejimuKiekis = 0;
+            catch (SqlException ex) { }
+            spejamaRaide = tbl.Rows[0].Field<char>(0);
+            return spejamaRaide;
         }
 
         /// <summary>
@@ -74,8 +77,6 @@ namespace Speliotojas
         /// <param name="spejamasZodis"></param>
         public static void gautAtsakyma(bool pasisekimas, string spejamasZodis)
         {
-            //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\Zodziai.mdf;Integrated Security=True;Connect Timeout=30";
-            string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\Paulius\Desktop\Kartuves\GUI\GUI\Zodziai.mdf; Integrated Security = True";
             string atnaujint = "exec AtnaujintiKiekius";
             //string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
             string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'"; //exec IterptZodiIrSekme false , N'niekas'
