@@ -53,7 +53,8 @@ namespace GUI
         {
             while (zaidimas)
             {
-                apdorojamasSpejimas(zodis, testavimoZaidimas());
+                apdorojamasSpejimas(zodis, Speliotojas.Speliotojas.spekRaide());
+                //apdorojamasSpejimas(zodis, testavimoZaidimas());
             }
         }
 

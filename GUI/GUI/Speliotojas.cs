@@ -12,8 +12,8 @@ namespace Speliotojas
         private static char spejamaRaide;
         private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
-        private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\Zodziai.mdf;Integrated Security=True;Connect Timeout=30";
-        //private static string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\Paulius\Desktop\Kartuves\GUI\GUI\Zodziai.mdf; Integrated Security = True";
+        //private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\Zodziai.mdf;Integrated Security=True;Connect Timeout=30";
+        private static string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\Paulius\Desktop\Gallows\GUI\GUI\Zodziai.mdf; Integrated Security = True";
         
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Speliotojas
                 }
             }
             catch (SqlException ex) { }
-            spejamaRaide = tbl.Rows[0].Field<char>(0);
+            spejamaRaide = Convert.ToChar(tbl.Rows[0][0]);
             return spejamaRaide;
         }
 
