@@ -20,7 +20,7 @@ namespace GUI
             pasleptoZodzioRaidziuSarasas = pasleptasZodis.ToList();
         }
 
-        public bool spejimas(char spejimas)
+        public bool Spejimas(char spejimas)
         {
             bool atspejo = false;
             for(int i=0; i<zodis.Length; i++)
@@ -28,7 +28,7 @@ namespace GUI
                 if(zodis[i] == spejimas)
                 {
                     pasleptoZodzioRaidziuSarasas[i] = spejimas;
-                    konvertavimas();
+                    Konvertavimas();
                     atspejo = true;
                 }
             }
@@ -37,7 +37,7 @@ namespace GUI
             return false;
         }
 
-        private void konvertavimas()
+        private void Konvertavimas()
         {
             pasleptasZodis = string.Empty;
             foreach (char c in pasleptoZodzioRaidziuSarasas)
@@ -46,7 +46,7 @@ namespace GUI
             }
         }
 
-        public string atvaizdavimas()
+        public string Atvaizdavimas()
         {
             string dto = string.Empty;
             foreach (char c in pasleptasZodis)
@@ -54,7 +54,7 @@ namespace GUI
             return dto;
         }
 
-        public bool arAtspejoZodi()
+        public bool ArAtspejoZodi()
         {
             if(zodis == pasleptasZodis)
             {
@@ -63,7 +63,7 @@ namespace GUI
             return false;
         }
 
-        public string gautiZodi()
+        public string GautiZodi()
         {
             return zodis;
         }

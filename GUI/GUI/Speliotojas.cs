@@ -5,10 +5,11 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Speliotojas
+namespace GUI
 {
     public static class Speliotojas
     {
+        private static bool arNaudotiRandom = false;
         private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
         //private static string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai.mdf; Integrated Security = True";
@@ -21,9 +22,16 @@ namespace Speliotojas
         /// Dar tuscias metodas, veliau jis turetu priimti masyva raidziu ar kokia struktura (in development)
         /// </summary>
         /// <returns>Grazina spejama raide</returns>
-        public static char spekRaide()
+        public static char SpekRaide()
         {
-            return TopRaide();
+            if(arNaudotiRandom)
+            {
+                return TopRaide();
+            }
+            else
+            {
+                return TopXRaidziu();
+            }
         }
 
         private static string GautBandytosRaides()
@@ -41,7 +49,10 @@ namespace Speliotojas
             {
                 bandytosRaides = "' '";
             }
-
+            if(bandytosRaides.Length >15)
+            {
+                int a = 10;
+            }
             return bandytosRaides;
         }
 
@@ -54,12 +65,37 @@ namespace Speliotojas
             return spejamaRaide;
         }
 
+        private static char TopXRaidziu()
+        {
+            string gautRaides = "exec GautTopPagalKieki 5, N" + GautBandytosRaides();
+            DataTable DT = KreiptisDuombazen(gautRaides);
+            List<RaidesKiekis> RKlistas = new List<RaidesKiekis>();
+            foreach(DataRow eile in DT.Rows)
+            {
+                RaidesKiekis raide = new RaidesKiekis { raide = Convert.ToChar(eile[0]), kiekis = Convert.ToInt32(eile[1]) };
+                RKlistas.Add(raide);
+            }
+            char spejamaRaide = AtsitiktinisPagalSvertus(RKlistas);
+            return spejamaRaide;
+        }
+
         public static void RaidesAtspejimoSekme(bool sekme, char raide)
         {
             if (sekme)
                 atspetos_raides.Add(raide);
             else
+            {
                 neatspetos_raides.Add(raide);
+                if (arNaudotiRandom)
+                {
+                    arNaudotiRandom = false;
+                }
+                else
+                {
+                    arNaudotiRandom = true;
+                }
+            }
+                
         }
 
         /// <summary>
@@ -76,7 +112,7 @@ namespace Speliotojas
         /// </summary>
         /// <param name="pasisekimas"></param>
         /// <param name="spejamasZodis"></param>
-        public static void gautAtsakyma(bool pasisekimas, string spejamasZodis)
+        public static void GautAtsakyma(bool pasisekimas, string spejamasZodis)
         {
             string atnaujint = "exec AtnaujintiKiekius";
             //string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
@@ -108,6 +144,36 @@ namespace Speliotojas
             }
             catch (SqlException ex) { }
             return tbl;
+        }
+
+        private static char AtsitiktinisPagalSvertus(List<RaidesKiekis> rt)
+        {
+            /*
+            rt.Add(new RaidesKiekis { raide = 'a', kiekis = 6 });
+            rt.Add(new RaidesKiekis { raide = 'b', kiekis = 2 });
+            rt.Add(new RaidesKiekis { raide = 'c', kiekis = 3 });
+            rt.Add(new RaidesKiekis { raide = 'd', kiekis = 4 });
+            rt.Add(new RaidesKiekis { raide = 'e', kiekis = 4 });*/
+
+            int temp = 0;
+            foreach (RaidesKiekis c in rt)
+            {
+                temp += c.kiekis;
+            }
+            Random rand = new Random();
+            int rng = rand.Next(0, temp) + 1;
+            int range = 0;
+            char raide = '^';
+            foreach (RaidesKiekis c in rt)
+            {
+                if (rng > range && rng <= (c.kiekis + range))
+                {
+                    raide = c.raide;
+                    break;
+                }
+                range += c.kiekis;
+            }
+            return raide;
         }
     }
 }
