@@ -166,7 +166,7 @@ namespace GUI
                         //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
                     }
                 }
-                Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
+                //Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
             }
             else
             {
