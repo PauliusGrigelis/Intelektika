@@ -83,6 +83,8 @@ namespace Speliotojas
             string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'"; //exec IterptZodiIrSekme false , N'niekas'
             KreiptisDuombazen(irasytZodi);
             KreiptisDuombazen(atnaujint);
+            atspetos_raides = new List<char>();
+            neatspetos_raides = new List<char>();
         }
 
         private static DataTable KreiptisDuombazen(string komanda)
