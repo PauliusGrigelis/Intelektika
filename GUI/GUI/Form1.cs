@@ -34,12 +34,12 @@ namespace GUI
             if (button1.Text == "Sustabdyti")
             {
                 button1.Text = "Pradėti";
-                zaidimas = false;
                 sustabdyta = true;
             }
             else
             {
                 button1.Text = "Sustabdyti";
+                sustabdyta = false;
                 if (textBox1.Text.Length > 0) //input apribojimai
                 {
                     this.BeginInvoke(new MethodInvoker(() => { pictureBox3.Visible = false; }));
@@ -55,7 +55,6 @@ namespace GUI
                     label3.Text = gyvybes.ToString();
                     Task zaisti = new Task(() => pradeti(zodis));
                     zaisti.Start();
-                    //animuoti.Start();
                 }
                 else
                 {
@@ -120,50 +119,60 @@ namespace GUI
         {
             busena = 0;
             animacija();
-            //Thread.Sleep(2000); //tipo galvoja
-            if (zodis.spejimas(spejimas))
+            Thread.Sleep(2000); //tipo galvoja
+            if (!sustabdyta)
             {
-                this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.atvaizdavimas(); }));
-                this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("Atspėjo: " + spejimas + "\r\n"); }));
-                if (!zodis.arAtspejoZodi())
+                if (zodis.spejimas(spejimas))
                 {
-                    busena = 1;
-                    animacija();
-                    //ka pasakyti ai?
-                }
-                else //zaidimas baigtas, AI laimejo
-                {
-                    this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI laimėjo.\r\n"); }));
-                    Debug.Write("pergale");
-                    busena = 3;
-                    animacija();
-                    zaidimas = false;
-                    Speliotojas.Speliotojas.gautAtsakyma(true, zodis.gautiZodi());
-                    //ideti animacija, ar kaip kitaip atvaizduoti pergale
-                }
-            }
-            else
-            {
-                gyvybes--;
-                this.BeginInvoke(new MethodInvoker(() => { label3.Text = gyvybes.ToString(); }));
-                this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("Neatspėjo: " + spejimas + "\r\n"); }));
-                if (gyvybes != 0) //zaidimas baigtas - AI pralaimejo
-                {
-                    busena = 2;
-                    animacija();
+                    this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.atvaizdavimas(); }));
+                    this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("Atspėjo: " + spejimas + "\r\n"); }));
+                    if (!zodis.arAtspejoZodi())
+                    {
+                        busena = 1;
+                        animacija();
+                        //ka pasakyti ai?
+                    }
+                    else //zaidimas baigtas, AI laimejo
+                    {
+                        this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI laimėjo.\r\n"); }));
+                        Debug.Write("pergale");
+                        busena = 3;
+                        animacija();
+                        zaidimas = false;
+                        Speliotojas.Speliotojas.gautAtsakyma(true, zodis.gautiZodi());
+                        //ideti animacija, ar kaip kitaip atvaizduoti pergale
+                    }
                 }
                 else
                 {
-                    this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI pralaimėjo.\r\n"); }));
-                    Debug.Write("pralaimejimas");
-                    busena = 3;
-                    animacija();
-                    zaidimas = false;
-                    Speliotojas.Speliotojas.gautAtsakyma(false, zodis.gautiZodi());
-                    //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
+                    gyvybes--;
+                    this.BeginInvoke(new MethodInvoker(() => { label3.Text = gyvybes.ToString(); }));
+                    this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("Neatspėjo: " + spejimas + "\r\n"); }));
+                    if (gyvybes != 0) //zaidimas baigtas - AI pralaimejo
+                    {
+                        busena = 2;
+                        animacija();
+                    }
+                    else
+                    {
+                        this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI pralaimėjo.\r\n"); }));
+                        Debug.Write("pralaimejimas");
+                        busena = 3;
+                        animacija();
+                        zaidimas = false;
+                        Speliotojas.Speliotojas.gautAtsakyma(false, zodis.gautiZodi());
+                        //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
+                    }
                 }
+                Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
             }
-            //Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
+            else
+            {
+                Debug.Write("sustabdyta");
+                busena = 3;
+                animacija();
+                zaidimas = false;
+            }
         }
 
 
