@@ -92,7 +92,7 @@ namespace GUI
             rt.Add(new RaidesTikimybe { raide = 'c', kiekis = 3 });
             rt.Add(new RaidesTikimybe { raide = 'd', kiekis = 4 });
             rt.Add(new RaidesTikimybe { raide = 'e', kiekis = 4 });
-
+                
             int temp = 0;
             foreach (RaidesTikimybe c in rt)
             {
