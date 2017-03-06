@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
-using Speliotojas;
 using System.Diagnostics;
 using System.Media;
 
@@ -58,7 +57,7 @@ namespace GUI
                     this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = true; }));
                     this.BeginInvoke(new MethodInvoker(() => { pictureBox2.Visible = true; }));
                     Zodis zodis = new Zodis(textBox1.Text.ToLower());
-                    textBox2.Text = zodis.atvaizdavimas();
+                    textBox2.Text = zodis.Atvaizdavimas();
 
                     //pradedamas zaidimas
                     zaidimas = true;
@@ -79,7 +78,7 @@ namespace GUI
             while (zaidimas)
             {
                 //apdorojamasSpejimas(zodis, speliotojas());
-                apdorojamasSpejimas(zodis, Speliotojas.Speliotojas.spekRaide());
+                apdorojamasSpejimas(zodis, Speliotojas.SpekRaide());
                 //apdorojamasSpejimas(zodis, testavimoZaidimas());
             }
         }
@@ -92,7 +91,7 @@ namespace GUI
             rt.Add(new RaidesTikimybe { raide = 'c', kiekis = 3 });
             rt.Add(new RaidesTikimybe { raide = 'd', kiekis = 4 });
             rt.Add(new RaidesTikimybe { raide = 'e', kiekis = 4 });
-                
+
             int temp = 0;
             foreach (RaidesTikimybe c in rt)
             {
@@ -164,15 +163,15 @@ namespace GUI
             //Thread.Sleep(2000); //tipo galvoja
             if (!sustabdyta)
             {
-                if (zodis.spejimas(spejimas))
+                if (zodis.Spejimas(spejimas))
                 {
-                    this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.atvaizdavimas(); }));
+                    this.BeginInvoke(new MethodInvoker(() => { textBox2.Text = zodis.Atvaizdavimas(); }));
                     this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("Atspėjo: " + spejimas + "\r\n"); }));
-                    if (!zodis.arAtspejoZodi())
+                    if (!zodis.ArAtspejoZodi())
                     {
                         busena = 1;
                         animacija();
-                        Speliotojas.Speliotojas.RaidesAtspejimoSekme(true, spejimas);
+                        Speliotojas.RaidesAtspejimoSekme(true, spejimas);
                         //ka pasakyti ai?
                     }
                     else //zaidimas baigtas, AI laimejo
@@ -183,7 +182,7 @@ namespace GUI
                         animacija();
                         zaidimas = false;
                         this.BeginInvoke(new MethodInvoker(() => { button1.Text = "Pradėti"; }));
-                        Speliotojas.Speliotojas.gautAtsakyma(true, zodis.gautiZodi());
+                        Speliotojas.GautAtsakyma(true, zodis.GautiZodi());
                         //ideti animacija, ar kaip kitaip atvaizduoti pergale
                     }
                 }
@@ -196,7 +195,7 @@ namespace GUI
                     {
                         busena = 2;
                         animacija();
-                        Speliotojas.Speliotojas.RaidesAtspejimoSekme(false, spejimas);
+                        Speliotojas.RaidesAtspejimoSekme(false, spejimas);
                     }
                     else
                     {
@@ -206,7 +205,7 @@ namespace GUI
                         animacija();
                         zaidimas = false;
                         this.BeginInvoke(new MethodInvoker(() => { button1.Text = "Pradėti"; }));
-                        Speliotojas.Speliotojas.gautAtsakyma(false, zodis.gautiZodi());
+                        Speliotojas.GautAtsakyma(false, zodis.GautiZodi());
                         //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
                     }
                 }

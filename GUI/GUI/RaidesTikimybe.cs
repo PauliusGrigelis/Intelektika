@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GUI
 {
-    class RaidesTikimybe
+    class RaidesKiekis
     {
         public char raide { get; set; }
         public int kiekis { get; set; }
