@@ -27,18 +27,18 @@ namespace GUI
         }
         bool zaidimas = false;
         bool sustabdyta = false;
-        int busena = 0;
+        int busena = 3;
         int gyvybes;
         private void button1_Click(object sender, EventArgs e)
         {
-            if (button1.Text == "Sustabdyti")
+            if (button1.Text == "Atšaukti")
             {
                 button1.Text = "Pradėti";
                 sustabdyta = true;
             }
             else
             {
-                button1.Text = "Sustabdyti";
+                button1.Text = "Atšaukti";
                 sustabdyta = false;
                 if (textBox1.Text.Length > 0) //input apribojimai
                 {
@@ -119,7 +119,7 @@ namespace GUI
         {
             busena = 0;
             animacija();
-            Thread.Sleep(2000); //tipo galvoja
+            //Thread.Sleep(2000); //tipo galvoja
             if (!sustabdyta)
             {
                 if (zodis.spejimas(spejimas))
@@ -139,6 +139,7 @@ namespace GUI
                         busena = 3;
                         animacija();
                         zaidimas = false;
+                        this.BeginInvoke(new MethodInvoker(() => { button1.Text = "Pradėti"; }));
                         Speliotojas.Speliotojas.gautAtsakyma(true, zodis.gautiZodi());
                         //ideti animacija, ar kaip kitaip atvaizduoti pergale
                     }
@@ -160,6 +161,7 @@ namespace GUI
                         busena = 3;
                         animacija();
                         zaidimas = false;
+                        this.BeginInvoke(new MethodInvoker(() => { button1.Text = "Pradėti"; }));
                         Speliotojas.Speliotojas.gautAtsakyma(false, zodis.gautiZodi());
                         //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
                     }
