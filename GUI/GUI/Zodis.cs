@@ -62,5 +62,10 @@ namespace GUI
             }
             return false;
         }
+
+        public string gautiZodi()
+        {
+            return zodis;
+        }
     }
 }

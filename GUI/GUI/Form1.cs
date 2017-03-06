@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Speliotojas;
 using System.Diagnostics;
+using System.Media;
 
 namespace GUI
 {
@@ -25,27 +26,41 @@ namespace GUI
 
         }
         bool zaidimas = false;
+        bool sustabdyta = false;
         int busena = 0;
         int gyvybes;
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text.Length > 0) //input apribojimai
+            if (button1.Text == "Sustabdyti")
             {
-                Zodis zodis = new Zodis(textBox1.Text);
-                textBox2.Text = zodis.atvaizdavimas();
-                
-                //pradedamas zaidimas
-                zaidimas = true;
-                gyvybes = 5;
-                label3.Text = gyvybes.ToString();
-                Task zaisti = new Task(() => pradeti(zodis));
-                //Task animuoti = new Task(() => animacija());
-                zaisti.Start();
-                //animuoti.Start();
+                button1.Text = "Pradėti";
+                zaidimas = false;
+                sustabdyta = true;
             }
             else
             {
-                //ka daryt jei netinkamai ivestas zodis
+                button1.Text = "Sustabdyti";
+                if (textBox1.Text.Length > 0) //input apribojimai
+                {
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox3.Visible = false; }));
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox4.Visible = false; }));
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = true; }));
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox2.Visible = true; }));
+                    Zodis zodis = new Zodis(textBox1.Text.ToLower());
+                    textBox2.Text = zodis.atvaizdavimas();
+
+                    //pradedamas zaidimas
+                    zaidimas = true;
+                    gyvybes = 5;
+                    label3.Text = gyvybes.ToString();
+                    Task zaisti = new Task(() => pradeti(zodis));
+                    zaisti.Start();
+                    //animuoti.Start();
+                }
+                else
+                {
+                    //ka daryt jei netinkamai ivestas zodis
+                }
             }
         }
 
@@ -58,6 +73,8 @@ namespace GUI
             }
         }
 
+        SoundPlayer doh = new SoundPlayer(@".\\..\\..\\src\\Doh.wav");
+        SoundPlayer woohoo = new SoundPlayer(@".\\..\\..\\src\\woohoo.wav");
         private void animacija()
         {
             try
@@ -71,12 +88,22 @@ namespace GUI
                 else if (busena == 1) //atspejo
                 {
                     this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = false; }));
+                    this.BeginInvoke(new MethodInvoker(() => { woohoo.Play(); }));
                     pictureBox2.Image = Image.FromFile(".\\..\\..\\src\\Homer_simpsonwoohooo.gif");
                 }
-                else //neatspejo
+                else if (busena == 2) //neatspejo
                 {
+                    this.BeginInvoke(new MethodInvoker(() => { doh.Play(); }));
                     this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = false; }));
                     pictureBox2.Image = Image.FromFile(".\\..\\..\\src\\Homer_simpsondoh.png");
+                }
+                else //laukia
+                {
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = false; }));
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox2.Visible = false; }));
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox3.Visible = true; }));
+                    this.BeginInvoke(new MethodInvoker(() => { pictureBox4.Visible = true; }));
+                    pictureBox3.Image = Image.FromFile(".\\..\\..\\src\\sleeping.png");
                 }
             }
             catch { }
@@ -86,6 +113,7 @@ namespace GUI
         {
             pictureBox1.Image = Image.FromFile(".\\..\\..\\src\\ajax-loader.gif");
             pictureBox1.Visible = false;
+            pictureBox4.Image = Image.FromFile(".\\..\\..\\src\\Zzz.gif");
         }
 
         private void apdorojamasSpejimas(Zodis zodis, char spejimas)
@@ -107,9 +135,11 @@ namespace GUI
                 {
                     this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI laimėjo.\r\n"); }));
                     Debug.Write("pergale");
+                    busena = 3;
+                    animacija();
                     zaidimas = false;
+                    Speliotojas.Speliotojas.gautAtsakyma(true, zodis.gautiZodi());
                     //ideti animacija, ar kaip kitaip atvaizduoti pergale
-                    //duomenu irasymas?
                 }
             }
             else
@@ -126,9 +156,11 @@ namespace GUI
                 {
                     this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI pralaimėjo.\r\n"); }));
                     Debug.Write("pralaimejimas");
+                    busena = 3;
+                    animacija();
                     zaidimas = false;
+                    Speliotojas.Speliotojas.gautAtsakyma(false, zodis.gautiZodi());
                     //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
-                    //duomenu irasymas?
                 }
             }
             //Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
