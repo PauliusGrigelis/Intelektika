@@ -17,11 +17,7 @@ namespace GUI
 
         //private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Paulius\Desktop\Gallows\GUI\GUI\Zodziai.mdf;Integrated Security=True";
         private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\Zodziai.mdf;Integrated Security=True";
-
-        /// <summary>
-        /// Dar tuscias metodas, veliau jis turetu priimti masyva raidziu ar kokia struktura (in development)
-        /// </summary>
-        /// <returns>Grazina spejama raide</returns>
+        
         public static char SpekRaide()
         {
             if(arNaudotiRandom)
@@ -97,26 +93,16 @@ namespace GUI
             }
                 
         }
-
-        /// <summary>
-        /// Sis metodas veliau turetu but suristas but su GVSu kad jis periminetu kodel spejamas vienas ar kitas spejimas (in development)
-        /// </summary>
-        /// <returns></returns>
+        
         public static string iLoga()
         {
             return string.Empty;
         }
-
-        /// <summary>
-        /// Išsaugo žodį ir atnaujina raidziu lentele
-        /// </summary>
-        /// <param name="pasisekimas"></param>
-        /// <param name="spejamasZodis"></param>
+        
         public static void GautAtsakyma(bool pasisekimas, string spejamasZodis)
         {
             string atnaujint = "exec AtnaujintiKiekius";
-            //string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
-            string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'"; //exec IterptZodiIrSekme false , N'niekas'
+            string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'";
             KreiptisDuombazen(irasytZodi);
             KreiptisDuombazen(atnaujint);
             atspetos_raides = new List<char>();
@@ -148,13 +134,6 @@ namespace GUI
 
         private static char AtsitiktinisPagalSvertus(List<RaidesKiekis> rt)
         {
-            /*
-            rt.Add(new RaidesKiekis { raide = 'a', kiekis = 6 });
-            rt.Add(new RaidesKiekis { raide = 'b', kiekis = 2 });
-            rt.Add(new RaidesKiekis { raide = 'c', kiekis = 3 });
-            rt.Add(new RaidesKiekis { raide = 'd', kiekis = 4 });
-            rt.Add(new RaidesKiekis { raide = 'e', kiekis = 4 });*/
-
             int temp = 0;
             foreach (RaidesKiekis c in rt)
             {
