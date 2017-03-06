@@ -25,6 +25,16 @@ namespace GUI
         {
 
         }
+
+        private void panaikintiTarpus()
+        {
+            string apdorotasTekstas = string.Empty;
+            foreach (char c in textBox1.Text)
+                if (c != ' ')
+                    apdorotasTekstas += c;
+            textBox1.Text = apdorotasTekstas;
+        }
+
         bool zaidimas = false;
         bool sustabdyta = false;
         int busena = 3;
@@ -38,6 +48,7 @@ namespace GUI
             }
             else
             {
+                panaikintiTarpus();
                 button1.Text = "Atšaukti";
                 sustabdyta = false;
                 if (textBox1.Text.Length > 0) //input apribojimai
