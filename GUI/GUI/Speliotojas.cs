@@ -26,11 +26,11 @@ namespace GUI
         {
             if(arNaudotiRandom)
             {
-                return TopRaide();
+                return TopXRaidziu();
             }
             else
             {
-                return TopXRaidziu();
+                return TopRaide();
             }
         }
 

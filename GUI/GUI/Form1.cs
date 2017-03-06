@@ -83,36 +83,6 @@ namespace GUI
             }
         }
 
-        public char speliotojas()
-        {
-            List<RaidesTikimybe> rt = new List<RaidesTikimybe>();
-            rt.Add(new RaidesTikimybe { raide = 'a', kiekis = 6 });
-            rt.Add(new RaidesTikimybe { raide = 'b', kiekis = 2 });
-            rt.Add(new RaidesTikimybe { raide = 'c', kiekis = 3 });
-            rt.Add(new RaidesTikimybe { raide = 'd', kiekis = 4 });
-            rt.Add(new RaidesTikimybe { raide = 'e', kiekis = 4 });
-
-            int temp = 0;
-            foreach (RaidesTikimybe c in rt)
-            {
-                temp += c.kiekis;
-            }
-            Random rand = new Random();
-            int rng = rand.Next(0, temp) + 1;
-            int range = 0;
-            char raide = '^';
-            foreach (RaidesTikimybe c in rt)
-            {
-                if (rng > range && rng <= (c.kiekis + range))
-                {
-                    raide = c.raide;
-                    break;
-                }
-                range += c.kiekis;
-            }
-            return raide;
-        }
-
         SoundPlayer doh = new SoundPlayer(@".\\..\\..\\src\\Doh.wav");
         SoundPlayer woohoo = new SoundPlayer(@".\\..\\..\\src\\woohoo.wav");
         private void animacija()
