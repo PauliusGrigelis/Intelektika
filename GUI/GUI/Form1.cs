@@ -161,6 +161,7 @@ namespace GUI
                     {
                         busena = 1;
                         animacija();
+                        Speliotojas.Speliotojas.RaidesAtspejimoSekme(true, spejimas);
                         //ka pasakyti ai?
                     }
                     else //zaidimas baigtas, AI laimejo
@@ -184,6 +185,7 @@ namespace GUI
                     {
                         busena = 2;
                         animacija();
+                        Speliotojas.Speliotojas.RaidesAtspejimoSekme(false, spejimas);
                     }
                     else
                     {

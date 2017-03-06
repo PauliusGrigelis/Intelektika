@@ -9,13 +9,13 @@ namespace Speliotojas
 {
     public static class Speliotojas
     {
-        private static char spejamaRaide;
         private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
         //private static string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai.mdf; Integrated Security = True";
         //
 
-        private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Paulius\Desktop\Gallows\GUI\GUI\Zodziai.mdf;Integrated Security=True";
+        //private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Paulius\Desktop\Gallows\GUI\GUI\Zodziai.mdf;Integrated Security=True";
+        private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\Zodziai.mdf;Integrated Security=True";
 
         /// <summary>
         /// Dar tuscias metodas, veliau jis turetu priimti masyva raidziu ar kokia struktura (in development)
@@ -23,8 +23,13 @@ namespace Speliotojas
         /// <returns>Grazina spejama raide</returns>
         public static char spekRaide()
         {
+            return TopRaide();
+        }
+
+        private static string GautBandytosRaides()
+        {
             string bandytosRaides = string.Empty;
-            foreach(char raide in atspetos_raides)
+            foreach (char raide in atspetos_raides)
             {
                 bandytosRaides += raide;
             }
@@ -32,34 +37,29 @@ namespace Speliotojas
             {
                 bandytosRaides += raide;
             }
-            if(bandytosRaides == string.Empty)
+            if (bandytosRaides == string.Empty)
             {
-                bandytosRaides = "''";
+                bandytosRaides = "' '";
             }
 
-            string gautRaide = "SELECT top 1 Raide from dbo.Raides where Raide not in ("+ bandytosRaides + ") order by NEWID()";
-            //string gautRaide = "exec GautRandomRaide " + bandytosRaides; //SELECT top 1 Raide from dbo.Raides where Raide not in (@raides) order by NEWID()
+            return bandytosRaides;
+        }
 
-            DataTable tbl = new DataTable();
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
+        private static char TopRaide()
+        {
+            string gautRaide = "exec GautiTopNesikartojanciaRaide N" + GautBandytosRaides();
+            DataTable DT = KreiptisDuombazen(gautRaide);
+            char spejamaRaide = Convert.ToChar(DT.Rows[0][0]);
 
-                    using (SqlCommand cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandText = gautRaide;
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            da.Fill(tbl);
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex) { }
-            spejamaRaide = Convert.ToChar(tbl.Rows[0][0]);
             return spejamaRaide;
+        }
+
+        public static void RaidesAtspejimoSekme(bool sekme, char raide)
+        {
+            if (sekme)
+                atspetos_raides.Add(raide);
+            else
+                neatspetos_raides.Add(raide);
         }
 
         /// <summary>
@@ -81,6 +81,12 @@ namespace Speliotojas
             string atnaujint = "exec AtnaujintiKiekius";
             //string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
             string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'"; //exec IterptZodiIrSekme false , N'niekas'
+            KreiptisDuombazen(irasytZodi);
+            KreiptisDuombazen(atnaujint);
+        }
+
+        private static DataTable KreiptisDuombazen(string komanda)
+        {
             DataTable tbl = new DataTable();
             try
             {
@@ -90,21 +96,16 @@ namespace Speliotojas
 
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = irasytZodi;
+                        cmd.CommandText = komanda;
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             da.Fill(tbl);
-                        }
-
-                        cmd.CommandText = atnaujint;
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            da.Fill(tbl); // <-- nors ner ka pildyt, vistiek reikia kad suveiktu procedura
                         }
                     }
                 }
             }
             catch (SqlException ex) { }
+            return tbl;
         }
     }
 }
