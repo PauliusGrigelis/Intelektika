@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RaidesTikimybe.cs" />
     <Compile Include="Speliotojas.cs" />
     <Compile Include="Zodis.cs" />
     <EmbeddedResource Include="Form1.resx">
