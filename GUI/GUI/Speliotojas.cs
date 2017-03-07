@@ -51,7 +51,8 @@ namespace GUI
         {
             if(arNaudotiRandom)
             {
-                return TopXRaidziu();
+                return IeskotiZodzio();
+                //return TopXRaidziu();
             }
             else
             {
@@ -102,6 +103,65 @@ namespace GUI
             }
             char spejamaRaide = AtsitiktinisPagalSvertus(RKlistas);
             return spejamaRaide;
+        }
+
+        private static char IeskotiZodzio()
+        {
+            //pakeisti proceduros pavadinima, parametrus
+            List<string> zodziaiPagalLen = new List<string>();
+            string gautRaides = "exec GautZodziusPagalZodzioIlgi " + spejamasZodis.Length;
+            DataTable DT = KreiptisDuombazen(gautRaides);
+            foreach (DataRow eile in DT.Rows)
+            {
+                zodziaiPagalLen.Add(panaikintiTarpus(eile[0].ToString()));
+            }
+            List<string> atrinktiZodziai = new List<string>();
+            List<RaidesKiekis> RKlistas = new List<RaidesKiekis>();
+            bool reikalingas = true;
+            foreach (string zodis in zodziaiPagalLen) {
+                reikalingas = true;
+                foreach (char raide in neatspetos_raides) {
+                    if (zodis.Contains(raide)) { reikalingas = false; break; }
+                }
+                if(reikalingas)
+                    atrinktiZodziai.Add(zodis);
+            }
+
+            bool rasta = false;
+            string apkarpytasZodis;
+            foreach(string zodis in atrinktiZodziai)
+            {
+                apkarpytasZodis = PasalintiBesikartojanciasRaides(zodis);
+                foreach (char raide in apkarpytasZodis)
+                {
+                    if (!atspetos_raides.Contains(raide))
+                    {
+                        rasta = false;
+                        foreach (RaidesKiekis rk in RKlistas)
+                        {
+                            if (rk.raide == raide)
+                            {
+                                rk.kiekis++;
+                                rasta = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!rasta) RKlistas.Add(new RaidesKiekis { raide = raide, kiekis = 1 });
+                }
+            }
+
+            char spejamaRaide = AtsitiktinisPagalSvertus(RKlistas);
+            return spejamaRaide;
+        }
+
+        private static string panaikintiTarpus(string zodis)
+        {
+            string apdorotasTekstas = string.Empty;
+            foreach (char c in zodis)
+                if (c != ' ')
+                    apdorotasTekstas += c;
+            return apdorotasTekstas;
         }
 
         public static void RaidesAtspejimoSekme(bool sekme, char raide)
