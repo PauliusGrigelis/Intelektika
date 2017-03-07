@@ -100,14 +100,7 @@ namespace GUI
             else
             {
                 neatspetos_raides.Add(raide);
-                if (arNaudotiRandom)
-                {
-                    arNaudotiRandom = false;
-                }
-                else
-                {
-                    arNaudotiRandom = true;
-                }
+                arNaudotiRandom = false;
             }
                 
         }
