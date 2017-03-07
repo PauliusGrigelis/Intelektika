@@ -34,6 +34,25 @@ namespace GUI
             textBox1.Text = apdorotasTekstas;
         }
 
+        string galimosRaides = "aąbcčdeęėfghiįyjklmnoprsštuūųvzž";
+        private bool tikrintiZodi(string input)
+        {
+            bool leista = false;
+            foreach(char c in input)
+            {
+                leista = false;
+                foreach(char raide in galimosRaides)
+                {
+                    if (c == raide || c == Char.ToUpper(raide))
+                    {
+                        leista = true; break;
+                    }
+                }
+                if (!leista) break;
+            }
+            return leista;
+        }
+
         bool zaidimas = false;
         bool sustabdyta = false;
         int busena = 3;
@@ -48,27 +67,34 @@ namespace GUI
             else
             {
                 panaikintiTarpus();
-                button1.Text = "Atšaukti";
-                sustabdyta = false;
-                if (textBox1.Text.Length > 0) //input apribojimai
+                if (tikrintiZodi(textBox1.Text))
                 {
-                    this.BeginInvoke(new MethodInvoker(() => { pictureBox3.Visible = false; }));
-                    this.BeginInvoke(new MethodInvoker(() => { pictureBox4.Visible = false; }));
-                    this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = true; }));
-                    this.BeginInvoke(new MethodInvoker(() => { pictureBox2.Visible = true; }));
-                    Zodis zodis = new Zodis(textBox1.Text.ToLower());
-                    textBox2.Text = zodis.Atvaizdavimas();
+                    button1.Text = "Atšaukti";
+                    sustabdyta = false;
+                    if (textBox1.Text.Length > 0) //input apribojimai
+                    {
+                        this.BeginInvoke(new MethodInvoker(() => { pictureBox3.Visible = false; }));
+                        this.BeginInvoke(new MethodInvoker(() => { pictureBox4.Visible = false; }));
+                        this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = true; }));
+                        this.BeginInvoke(new MethodInvoker(() => { pictureBox2.Visible = true; }));
+                        Zodis zodis = new Zodis(textBox1.Text.ToLower());
+                        textBox2.Text = zodis.Atvaizdavimas();
 
-                    //pradedamas zaidimas
-                    zaidimas = true;
-                    gyvybes = 5;
-                    label3.Text = gyvybes.ToString();
-                    Task zaisti = new Task(() => pradeti(zodis));
-                    zaisti.Start();
+                        //pradedamas zaidimas
+                        zaidimas = true;
+                        gyvybes = 5;
+                        label3.Text = gyvybes.ToString();
+                        Task zaisti = new Task(() => pradeti(zodis));
+                        zaisti.Start();
+                    }
+                    else
+                    {
+                        //ka daryt jei netinkamai ivestas zodis
+                    }
                 }
                 else
                 {
-                    //ka daryt jei netinkamai ivestas zodis
+                    MessageBox.Show("Įvedėt neatpažįstamų simbolių");
                 }
             }
         }
