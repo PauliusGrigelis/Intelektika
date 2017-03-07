@@ -37,6 +37,11 @@ namespace GUI
             }
         }
 
+        private static string PasalintiBesikartojanciasRaides(string tekstas)
+        {
+            return new string(tekstas.ToCharArray().Distinct().ToArray());
+        }
+
         public static void GautiSpejamaZodi(string spejamas)
         {
             spejamasZodis = spejamas;
