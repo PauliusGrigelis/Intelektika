@@ -51,8 +51,8 @@ namespace GUI
         {
             if(arNaudotiRandom)
             {
-                return IeskotiZodzio();
-                //return TopXRaidziu();
+                //return IeskotiZodzio();
+                return TopXRaidziu();
             }
             else
             {
@@ -75,6 +75,10 @@ namespace GUI
             {
                 bandytosRaides = "' '";
             }
+            else
+            {
+                bandytosRaides = "'"+ bandytosRaides + "'";
+            }
             if(bandytosRaides.Length >15)
             {
                 int a = 10;
@@ -93,7 +97,7 @@ namespace GUI
 
         private static char TopXRaidziu()
         {
-            string gautRaides = "exec GautTopPagalKieki 5, N" + GautBandytosRaides();
+            string gautRaides = "exec GautTopPagalKieki "+(neatspetos_raides.Count+1).ToString()+", N" + GautBandytosRaides();
             DataTable DT = KreiptisDuombazen(gautRaides);
             List<RaidesKiekis> RKlistas = new List<RaidesKiekis>();
             foreach(DataRow eile in DT.Rows)
@@ -183,8 +187,8 @@ namespace GUI
         
         public static void GautAtsakyma(bool pasisekimas, string spejamasZodis)
         {
-            string atnaujint = "exec AtnaujintiKiekius";
             string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'";
+            string atnaujint = "exec AtnaujintiKiekius";
             KreiptisDuombazen(irasytZodi);
             KreiptisDuombazen(atnaujint);
             atspetos_raides = new List<char>();
