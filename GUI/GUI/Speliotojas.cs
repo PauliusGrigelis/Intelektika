@@ -119,8 +119,7 @@ namespace GUI
         public static void GautAtsakyma(bool pasisekimas, string spejamasZodis)
         {
             string atnaujint = "exec AtnaujintiKiekius";
-            //string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
-            string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'"; //exec IterptZodiIrSekme false , N'niekas'
+            string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'";
             KreiptisDuombazen(irasytZodi);
             KreiptisDuombazen(atnaujint);
             atspetos_raides = new List<char>();
@@ -181,6 +180,7 @@ namespace GUI
 
         private static char KaireDesineXRaidziu()
         {
+
             return ' ';
         }
     }
