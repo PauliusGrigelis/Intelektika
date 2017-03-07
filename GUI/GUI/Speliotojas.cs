@@ -111,7 +111,7 @@ namespace GUI
             else
             {
                 neatspetos_raides.Add(raide);
-                arNaudotiRandom = false;
+                arNaudotiRandom = true;
             }
                 
         }
