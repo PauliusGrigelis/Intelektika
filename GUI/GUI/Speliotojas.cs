@@ -46,7 +46,8 @@ namespace GUI
         {
             if(arNaudotiRandom)
             {
-                return TopXRaidziu();
+                return IeskotiZodzio();
+                //return TopXRaidziu();
             }
             else
             {
@@ -103,11 +104,11 @@ namespace GUI
         {
             //pakeisti proceduros pavadinima, parametrus
             List<string> zodziaiPagalLen = new List<string>();
-            string gautRaides = "exec GautTopPagalKieki 5";
+            string gautRaides = "exec GautZodziusPagalZodzioIlgi " + spejamasZodis.Length;
             DataTable DT = KreiptisDuombazen(gautRaides);
             foreach (DataRow eile in DT.Rows)
             {
-                zodziaiPagalLen.Add(eile[0].ToString());
+                zodziaiPagalLen.Add(panaikintiTarpus(eile[0].ToString()));
             }
             List<string> atrinktiZodziai = new List<string>();
             List<RaidesKiekis> RKlistas = new List<RaidesKiekis>();
@@ -142,6 +143,15 @@ namespace GUI
 
             char spejamaRaide = AtsitiktinisPagalSvertus(RKlistas);
             return spejamaRaide;
+        }
+
+        private static string panaikintiTarpus(string zodis)
+        {
+            string apdorotasTekstas = string.Empty;
+            foreach (char c in zodis)
+                if (c != ' ')
+                    apdorotasTekstas += c;
+            return apdorotasTekstas;
         }
 
         public static void RaidesAtspejimoSekme(bool sekme, char raide)

@@ -104,6 +104,7 @@ namespace GUI
             while (zaidimas)
             {
                 //apdorojamasSpejimas(zodis, speliotojas());
+                Speliotojas.GautiSpejamaZodi(zodis.pasleptasZodis);
                 apdorojamasSpejimas(zodis, Speliotojas.SpekRaide());
                 //apdorojamasSpejimas(zodis, testavimoZaidimas());
             }
@@ -187,13 +188,13 @@ namespace GUI
                     gyvybes--;
                     this.BeginInvoke(new MethodInvoker(() => { label3.Text = gyvybes.ToString(); }));
                     this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("Neatspėjo: " + spejimas + "\r\n"); }));
-                    if (gyvybes != 0) //zaidimas baigtas - AI pralaimejo
+                    if (gyvybes != 0) 
                     {
                         busena = 2;
                         animacija();
                         Speliotojas.RaidesAtspejimoSekme(false, spejimas);
                     }
-                    else
+                    else //zaidimas baigtas - AI pralaimejo
                     {
                         this.BeginInvoke(new MethodInvoker(() => { textBox3.AppendText("AI pralaimėjo.\r\n"); }));
                         Debug.Write("pralaimejimas");
@@ -205,7 +206,6 @@ namespace GUI
                         //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
                     }
                 }
-                Speliotojas.GautiSpejamaZodi(zodis.pasleptasZodis);
                 //Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
             }
             else
