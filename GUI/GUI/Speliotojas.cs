@@ -14,6 +14,7 @@ namespace GUI
         private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
         private static string connectionString;
+        private static string spejamasZodis;
 
         static Speliotojas()
         {
@@ -34,6 +35,11 @@ namespace GUI
             {
                 connectionString = bendras;
             }
+        }
+
+        public static void GautiSpejamaZodi(string spejamas)
+        {
+            spejamasZodis = spejamas;
         }
 
         public static char SpekRaide()
@@ -100,14 +106,7 @@ namespace GUI
             else
             {
                 neatspetos_raides.Add(raide);
-                if (arNaudotiRandom)
-                {
-                    arNaudotiRandom = false;
-                }
-                else
-                {
-                    arNaudotiRandom = true;
-                }
+                arNaudotiRandom = false;
             }
                 
         }
@@ -120,8 +119,7 @@ namespace GUI
         public static void GautAtsakyma(bool pasisekimas, string spejamasZodis)
         {
             string atnaujint = "exec AtnaujintiKiekius";
-            //string irasytZodi = "exec IterptZodi N'" + spejamasZodis + "'";
-            string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'"; //exec IterptZodiIrSekme false , N'niekas'
+            string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'";
             KreiptisDuombazen(irasytZodi);
             KreiptisDuombazen(atnaujint);
             atspetos_raides = new List<char>();
@@ -172,6 +170,18 @@ namespace GUI
                 range += c.kiekis;
             }
             return raide;
+        }
+
+        private static char KaireDesine()
+        {
+            
+            return ' ';
+        }
+
+        private static char KaireDesineXRaidziu()
+        {
+
+            return ' ';
         }
     }
 }
