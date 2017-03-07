@@ -205,6 +205,7 @@ namespace GUI
                         //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
                     }
                 }
+                Speliotojas.GautiSpejamaZodi(zodis.pasleptasZodis);
                 //Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
             }
             else

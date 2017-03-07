@@ -99,6 +99,51 @@ namespace GUI
             return spejamaRaide;
         }
 
+        private static char IeskotiZodzio()
+        {
+            //pakeisti proceduros pavadinima, parametrus
+            List<string> zodziaiPagalLen = new List<string>();
+            string gautRaides = "exec GautTopPagalKieki 5";
+            DataTable DT = KreiptisDuombazen(gautRaides);
+            foreach (DataRow eile in DT.Rows)
+            {
+                zodziaiPagalLen.Add(eile[0].ToString());
+            }
+            List<string> atrinktiZodziai = new List<string>();
+            List<RaidesKiekis> RKlistas = new List<RaidesKiekis>();
+            bool reikalingas = true;
+            foreach (string zodis in zodziaiPagalLen) {
+                reikalingas = true;
+                foreach (char raide in GautBandytosRaides()) {
+                    if (zodis.Contains(raide)) { reikalingas = false; break; }
+                }
+                if(reikalingas)
+                    atrinktiZodziai.Add(zodis);
+            }
+
+            bool rasta = false;
+            foreach(string zodis in atrinktiZodziai)
+            {
+                foreach(char raide in zodis)
+                {
+                    rasta = false;
+                    foreach (RaidesKiekis rk in RKlistas)
+                    {
+                        if(rk.raide == raide)
+                        {
+                            rk.kiekis++;
+                            rasta = true;
+                            break;
+                        }
+                    }
+                    if (!rasta) RKlistas.Add(new RaidesKiekis { raide = raide, kiekis = 1 });
+                }
+            }
+
+            char spejamaRaide = AtsitiktinisPagalSvertus(RKlistas);
+            return spejamaRaide;
+        }
+
         public static void RaidesAtspejimoSekme(bool sekme, char raide)
         {
             if (sekme)

@@ -10,6 +10,6 @@ namespace GUI
     {
         public char raide { get; set; }
         public int kiekis { get; set; }
-
+        
     }
 }
