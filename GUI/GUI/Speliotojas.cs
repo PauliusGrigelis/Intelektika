@@ -120,7 +120,7 @@ namespace GUI
             bool reikalingas = true;
             foreach (string zodis in zodziaiPagalLen) {
                 reikalingas = true;
-                foreach (char raide in GautBandytosRaides()) {
+                foreach (char raide in neatspetos_raides) {
                     if (zodis.Contains(raide)) { reikalingas = false; break; }
                 }
                 if(reikalingas)
@@ -128,18 +128,23 @@ namespace GUI
             }
 
             bool rasta = false;
+            string apkarpytasZodis;
             foreach(string zodis in atrinktiZodziai)
             {
-                foreach(char raide in zodis)
+                apkarpytasZodis = PasalintiBesikartojanciasRaides(zodis);
+                foreach (char raide in apkarpytasZodis)
                 {
-                    rasta = false;
-                    foreach (RaidesKiekis rk in RKlistas)
+                    if (!atspetos_raides.Contains(raide))
                     {
-                        if(rk.raide == raide)
+                        rasta = false;
+                        foreach (RaidesKiekis rk in RKlistas)
                         {
-                            rk.kiekis++;
-                            rasta = true;
-                            break;
+                            if (rk.raide == raide)
+                            {
+                                rk.kiekis++;
+                                rasta = true;
+                                break;
+                            }
                         }
                     }
                     if (!rasta) RKlistas.Add(new RaidesKiekis { raide = raide, kiekis = 1 });
@@ -166,7 +171,7 @@ namespace GUI
             else
             {
                 neatspetos_raides.Add(raide);
-                arNaudotiRandom = false;
+                arNaudotiRandom = true;
             }
                 
         }
