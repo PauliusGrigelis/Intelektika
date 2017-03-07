@@ -130,7 +130,7 @@ namespace GUI
         {
             busena = 0;
             animacija();
-            Thread.Sleep(2000); //tipo galvoja
+            //Thread.Sleep(2000); //tipo galvoja
             if (!sustabdyta)
             {
                 if (zodis.Spejimas(spejimas))
@@ -179,7 +179,7 @@ namespace GUI
                         //ideti animacija, ar kaip kitaip atvaizduoti pralaimejima
                     }
                 }
-                Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
+                //Thread.Sleep(1000);// atspejo/neatspejo animacijai isskirtas laikas
             }
             else
             {

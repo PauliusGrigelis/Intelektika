@@ -14,6 +14,7 @@ namespace GUI
         private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
         private static string connectionString;
+        private static string spejamasZodis;
 
         static Speliotojas()
         {
@@ -34,6 +35,11 @@ namespace GUI
             {
                 connectionString = bendras;
             }
+        }
+
+        public static void GautiSpejamaZodi(string spejamas)
+        {
+            spejamasZodis = spejamas;
         }
 
         public static char SpekRaide()
@@ -165,6 +171,17 @@ namespace GUI
                 range += c.kiekis;
             }
             return raide;
+        }
+
+        private static char KaireDesine()
+        {
+            
+            return ' ';
+        }
+
+        private static char KaireDesineXRaidziu()
+        {
+            return ' ';
         }
     }
 }
