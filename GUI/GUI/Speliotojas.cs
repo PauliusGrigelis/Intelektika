@@ -79,10 +79,10 @@ namespace GUI
             {
                 bandytosRaides = "'"+ bandytosRaides + "'";
             }
-            if(bandytosRaides.Length >15)
-            {
-                int a = 10;
-            }
+            //if(bandytosRaides.Length >15)
+            //{
+            //    int a = 10;
+            //}
             return bandytosRaides;
         }
 
