@@ -226,12 +226,12 @@ namespace GUI
                 temp += c.kiekis;
             }
             Random rand = new Random();
-            int rng = rand.Next(0, temp) + 1;
+            int rng = rand.Next(0, temp);
             int range = 0;
-            char raide = '^';
+            char raide = '*';
             foreach (RaidesKiekis c in rt)
             {
-                if (rng > range && rng <= (c.kiekis + range))
+                if (rng >= range && rng < (c.kiekis + range))
                 {
                     raide = c.raide;
                     break;
