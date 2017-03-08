@@ -82,7 +82,7 @@ namespace GUI
 
                         //pradedamas zaidimas
                         zaidimas = true;
-                        gyvybes = 5;
+                        gyvybes = 50;
                         label3.Text = gyvybes.ToString();
                         Task zaisti = new Task(() => pradeti(zodis));
                         zaisti.Start();
