@@ -11,8 +11,8 @@ namespace GUI
     public static class Speliotojas
     {
 		private static bool taisykleNr1 = true;
-		private static bool taisykleNr2 = false;
-		private static bool taisykleNr3 = false;
+		private static bool taisykleNr2 = true;
+		private static bool taisykleNr3 = true;
 		private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
         private static string connectionString;
@@ -50,8 +50,8 @@ namespace GUI
                 galimiVariantai.Add(panaikintiTarpus(eile[0].ToString()));
             }
 			taisykleNr1 = true;
-			taisykleNr2 = false;
-			taisykleNr3 = false;
+			taisykleNr2 = true;
+			taisykleNr3 = true;
 			atspetos_raides = new List<char>();
             neatspetos_raides = new List<char>();
         }
@@ -72,14 +72,13 @@ namespace GUI
 			{
 				return TopRaide();
 			}
-			if(taisykleNr2 || (!taisykleNr1 && !taisykleNr3))
+			else if(taisykleNr2)
 			{
 				char spejimas = IeskotiZodzioSuRegex();
 				if(spejimas != '*') return spejimas;
 				else
 				{
 					taisykleNr2 = false;
-					taisykleNr3 = true;
 					return TopXRaidziu();
 				}
 			}
