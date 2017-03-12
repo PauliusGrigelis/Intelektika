@@ -51,7 +51,8 @@ namespace GUI
         {
             if(arNaudotiRandom)
             {
-                return IeskotiZodzio();
+                return IeskotiZodzioSuRegex();
+               // return IeskotiZodzio();
                 //return TopXRaidziu();
             }
             else
@@ -105,6 +106,60 @@ namespace GUI
                 RaidesKiekis raide = new RaidesKiekis { raide = Convert.ToChar(eile[0]), kiekis = Convert.ToInt32(eile[1]) };
                 RKlistas.Add(raide);
             }
+            char spejamaRaide = AtsitiktinisPagalSvertus(RKlistas);
+            return spejamaRaide;
+        }
+
+        private static char IeskotiZodzioSuRegex()
+        {
+            List<string> zodziaiPagalLen = new List<string>();
+            string gautRaides = "exec GautZodziusPagalZodzioIlgi " + spejamasZodis.Length;
+            DataTable DT = KreiptisDuombazen(gautRaides);
+            foreach (DataRow eile in DT.Rows)
+            {
+                zodziaiPagalLen.Add(panaikintiTarpus(eile[0].ToString()));
+            }
+            List<string> atrinktiZodziai = new List<string>();
+            List<RaidesKiekis> RKlistas = new List<RaidesKiekis>();
+            
+            foreach (string zodis in zodziaiPagalLen) 
+            {
+                string pattern = string.Empty;
+                foreach(char c in spejamasZodis)
+                {
+                    if(c == '_') 
+                        pattern+="[^"+GautBandytosRaides()+"]";
+                    else
+                        pattern+=c;
+                }
+                if (System.Text.RegularExpressions.Regex.IsMatch(zodis, pattern))
+                    atrinktiZodziai.Add(zodis);
+            }
+
+            bool rasta = false;
+            string apkarpytasZodis;
+            foreach(string zodis in atrinktiZodziai)
+            {
+                apkarpytasZodis = PasalintiBesikartojanciasRaides(zodis);
+                foreach (char raide in apkarpytasZodis)
+                {
+                    rasta = false;
+                    if (!atspetos_raides.Contains(raide))
+                    {
+                        foreach (RaidesKiekis rk in RKlistas)
+                        {
+                            if (rk.raide == raide)
+                            {
+                                rk.kiekis++;
+                                rasta = true;
+                                break;
+                            }
+                        }
+                        if (!rasta) RKlistas.Add(new RaidesKiekis { raide = raide, kiekis = 1 });
+                    }
+                }
+            }
+
             char spejamaRaide = AtsitiktinisPagalSvertus(RKlistas);
             return spejamaRaide;
         }
