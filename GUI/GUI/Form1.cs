@@ -34,11 +34,12 @@ namespace GUI
             textBox1.Text = apdorotasTekstas;
         }
 
+		//greitas papildymas pries demonstracija, pamastyt apie geresni varianta
         string galimosRaides = "aąbcčdeęėfghiįyjklmnoprsštuūųvzž";
-        private bool tikrintiZodi(string input)
+        private bool tikrintiZodi(string tekstas)
         {
             bool leista = false;
-            foreach(char c in input)
+            foreach(char c in tekstas)
             {
                 leista = false;
                 foreach(char raide in galimosRaides)
@@ -67,36 +68,31 @@ namespace GUI
             else
             {
                 //sutvarkyti tikrinima
-                panaikintiTarpus();
-                if (tikrintiZodi(textBox1.Text))
-                {
-                    button1.Text = "Atšaukti";
-                    sustabdyta = false;
-                    if (textBox1.Text.Length > 0) //input apribojimai
-                    {
-                        this.BeginInvoke(new MethodInvoker(() => { pictureBox3.Visible = false; }));
-                        this.BeginInvoke(new MethodInvoker(() => { pictureBox4.Visible = false; }));
-                        this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = true; }));
-                        this.BeginInvoke(new MethodInvoker(() => { pictureBox2.Visible = true; }));
-                        Zodis zodis = new Zodis(textBox1.Text.ToLower());
-                        textBox2.Text = zodis.Atvaizdavimas();
+                //panaikintiTarpus(); //ar panaikinti tarpus? ar pranesti kad ivede neatpazistamu simboliu?
+				if(tikrintiZodi(textBox1.Text) && textBox1.Text.Length > 0) //input apribojimai
+				{
+					button1.Text = "Atšaukti";
+					sustabdyta = false;
+					this.BeginInvoke(new MethodInvoker(() => { pictureBox3.Visible = false; }));
+					this.BeginInvoke(new MethodInvoker(() => { pictureBox4.Visible = false; }));
+					this.BeginInvoke(new MethodInvoker(() => { pictureBox1.Visible = true; }));
+					this.BeginInvoke(new MethodInvoker(() => { pictureBox2.Visible = true; }));
+					Zodis zodis = new Zodis(textBox1.Text.ToLower());
+					textBox2.Text = zodis.Atvaizdavimas();
 
-                        //pradedamas zaidimas
-                        zaidimas = true;
-                        gyvybes = 50;
-                        label3.Text = gyvybes.ToString();
-                        Task zaisti = new Task(() => pradeti(zodis));
-                        zaisti.Start();
-                    }
-                    else
-                    {
-                        //ka daryt jei netinkamai ivestas zodis
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Įvedėt neatpažįstamų simbolių");
-                }
+					//pradedamas zaidimas
+					zaidimas = true;
+					gyvybes = 50;
+					label3.Text = gyvybes.ToString();
+					Speliotojas.Pazadinti(zodis.pasleptasZodis);
+					Task zaisti = new Task(() => pradeti(zodis));
+					zaisti.Start();
+				}
+				else
+				{
+					textBox1.Text = string.Empty;
+					MessageBox.Show("Įvedėt neatpažįstamų simbolių");
+				}
             }
         }
 
@@ -104,10 +100,8 @@ namespace GUI
         {
             while (zaidimas)
             {
-                //apdorojamasSpejimas(zodis, speliotojas());
                 Speliotojas.GautiSpejamaZodi(zodis.pasleptasZodis);
                 apdorojamasSpejimas(zodis, Speliotojas.SpekRaide());
-                //apdorojamasSpejimas(zodis, testavimoZaidimas());
             }
         }
 
@@ -170,7 +164,6 @@ namespace GUI
                         busena = 1;
                         animacija();
                         Speliotojas.RaidesAtspejimoSekme(true, spejimas);
-                        //ka pasakyti ai?
                     }
                     else //zaidimas baigtas, AI laimejo
                     {
@@ -216,24 +209,6 @@ namespace GUI
                 animacija();
                 zaidimas = false;
             }
-        }
-
-
-        List<char> speta = new List<char>(); //testavimui
-        private char testavimoZaidimas() //nesamone, bet tik testavimui
-        {
-            List<char> spejimai = new List<char>();
-            spejimai.Add('a');
-            spejimai.Add('c');
-            spejimai.Add('g');
-            spejimai.Add('h');
-            spejimai.Add('v');
-            spejimai.Add('x');
-            spejimai.Add('z');
-            spejimai.Add('l');
-            foreach (char c in spejimai)
-                if (!speta.Contains(c)) { speta.Add(c); return c; }
-            return 'o';
         }
 
         bool atidarytasLogas = false;
