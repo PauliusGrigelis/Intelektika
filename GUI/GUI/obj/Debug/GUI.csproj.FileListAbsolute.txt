@@ -43,3 +43,14 @@ C:\Users\Paulius\Desktop\Gallows\GUI\GUI\obj\Debug\GUI.csprojResolveAssemblyRefe
 C:\Users\Paulius\Desktop\Gallows\GUI\GUI\obj\Debug\GUI.Form1.resources
 C:\Users\Paulius\Desktop\Gallows\GUI\GUI\obj\Debug\GUI.Properties.Resources.resources
 C:\Users\Paulius\Desktop\Gallows\GUI\GUI\obj\Debug\GUI.csproj.GenerateResource.Cache
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\bin\Debug\Zodziai.mdf
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\bin\Debug\Zodziai_log.ldf
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\bin\Debug\GUI.exe.config
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\bin\Debug\GUI.exe
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\bin\Debug\GUI.pdb
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\obj\Debug\GUI.csprojResolveAssemblyReference.cache
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\obj\Debug\GUI.Form1.resources
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\obj\Debug\GUI.Properties.Resources.resources
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\obj\Debug\GUI.csproj.GenerateResource.Cache
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\obj\Debug\GUI.exe
+C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\obj\Debug\GUI.pdb

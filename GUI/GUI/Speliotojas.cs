@@ -19,7 +19,7 @@ namespace GUI
         static Speliotojas()
         {
             string bendras = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai.mdf; Integrated Security = True";
-            string pauliaus = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Paulius\Desktop\Gallows\GUI\GUI\Zodziai.mdf;Integrated Security=True";
+            string pauliaus = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\Zodziai.mdf;Integrated Security=True;";
             string olego = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\Zodziai.mdf;Integrated Security=True";
 
             
@@ -27,7 +27,7 @@ namespace GUI
             {
                 connectionString = olego;
             }
-            else if (Directory.Exists(@"C:\Users\Paulius\"))
+            else if (Directory.Exists(@"C:\Users\pgrig\"))
             {
                 connectionString = pauliaus;
             }
@@ -51,8 +51,8 @@ namespace GUI
         {
             if(arNaudotiRandom)
             {
-                //return IeskotiZodzio();
-                return TopXRaidziu();
+                return IeskotiZodzio();
+                //return TopXRaidziu();
             }
             else
             {
@@ -138,9 +138,9 @@ namespace GUI
                 apkarpytasZodis = PasalintiBesikartojanciasRaides(zodis);
                 foreach (char raide in apkarpytasZodis)
                 {
+                    rasta = false;
                     if (!atspetos_raides.Contains(raide))
                     {
-                        rasta = false;
                         foreach (RaidesKiekis rk in RKlistas)
                         {
                             if (rk.raide == raide)
@@ -150,8 +150,8 @@ namespace GUI
                                 break;
                             }
                         }
+                        if (!rasta) RKlistas.Add(new RaidesKiekis { raide = raide, kiekis = 1 });
                     }
-                    if (!rasta) RKlistas.Add(new RaidesKiekis { raide = raide, kiekis = 1 });
                 }
             }
 

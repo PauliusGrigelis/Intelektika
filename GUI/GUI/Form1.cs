@@ -66,6 +66,7 @@ namespace GUI
             }
             else
             {
+                //sutvarkyti tikrinima
                 panaikintiTarpus();
                 if (tikrintiZodi(textBox1.Text))
                 {
