@@ -15,10 +15,11 @@ namespace GUI
 		private static bool taisykleNr3 = true;
 		private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
-        private static string connectionString;
+        private static string connectionString = "Server=tcp:budeliai.database.windows.net,1433;Initial Catalog=ZODZIAI2.MDF;Persist Security Info=False;User ID=budelis;Password=abc1234!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=120;";
         private static string spejamasZodis;
         private static List<string> galimiVariantai = new List<string>();
 
+        /*
         static Speliotojas()
         {
             string bendras = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai2.mdf; Integrated Security = True";
@@ -38,7 +39,7 @@ namespace GUI
             {
                 connectionString = bendras;
             }
-        }
+        }*/
 
         public static void Pazadinti(string zodis)
         {            
@@ -239,7 +240,10 @@ namespace GUI
                     }
                 }
             }
-            catch (SqlException ex) { }
+            catch (SqlException ex)
+            {
+                int a;
+            }
             return tbl;
         }
 
