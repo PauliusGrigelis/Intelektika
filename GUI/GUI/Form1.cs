@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Media;
+using System.IO; //laikinai
 
 namespace GUI
 {
@@ -58,18 +59,39 @@ namespace GUI
         bool sustabdyta = false;
         int busena = 3;
         int gyvybes;
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (button1.Text == "Atšaukti")
-            {
-                button1.Text = "Pradėti";
-                sustabdyta = true;
-            }
-            else
-            {
-                //sutvarkyti tikrinima
-                //panaikintiTarpus(); //ar panaikinti tarpus? ar pranesti kad ivede neatpazistamu simboliu?
-				if(tikrintiZodi(textBox1.Text) && textBox1.Text.Length > 0) //input apribojimai
+		private void button1_Click(object sender, EventArgs e)
+		{
+
+			//List<string> zodziai = new List<string>();
+			//Encoding enc = Encoding.GetEncoding(1257); //"windows-1257"
+			//foreach(string line in File.ReadLines(@".\\..\\..\\src\\dazninis.txt", enc))
+			//{
+			//	List<string> words = new List<string>();
+			//	words = line.Split('\t').ToList();
+			//	zodziai.Add(words[0]);
+			//	zodziai.Add(words[2]);
+			//}
+			//foreach(string ivestis in zodziai)
+			//{
+			//if(tikrintiZodi(ivestis) && ivestis.Length > 1) //input apribojimai
+			//{
+			//	Random rand = new Random();
+
+			//	int luck = rand.Next(0, 2);
+			//	if(luck == 0)
+			//		Speliotojas.GautAtsakyma(true, ivestis.ToLower());
+			//	else
+			//		Speliotojas.GautAtsakyma(false, ivestis.ToLower());
+			//}
+			if(button1.Text == "Atšaukti")
+			{
+				button1.Text = "Pradėti";
+				sustabdyta = true;
+			}
+			else
+			{
+				//panaikintiTarpus(); //ar panaikinti tarpus? ar pranesti kad ivede neatpazistamu simboliu?
+				if(tikrintiZodi(textBox1.Text) && textBox1.Text.Length > 1) //input apribojimai
 				{
 					button1.Text = "Atšaukti";
 					sustabdyta = false;
@@ -82,10 +104,11 @@ namespace GUI
 
 					//pradedamas zaidimas
 					zaidimas = true;
-					gyvybes = 50;
+					gyvybes = 5;
 					label3.Text = gyvybes.ToString();
 					Speliotojas.Pazadinti(zodis.pasleptasZodis);
 					Task zaisti = new Task(() => pradeti(zodis));
+					Thread.Sleep(50);
 					zaisti.Start();
 				}
 				else
@@ -93,8 +116,8 @@ namespace GUI
 					textBox1.Text = string.Empty;
 					MessageBox.Show("Įvedėt neatpažįstamų simbolių");
 				}
-            }
-        }
+			}
+		}
 
         private void pradeti(Zodis zodis)
         {

@@ -21,8 +21,8 @@ namespace GUI
 
         static Speliotojas()
         {
-            string bendras = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai.mdf; Integrated Security = True";
-            string pauliaus = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\Zodziai.mdf;Integrated Security=True;";
+            string bendras = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai2.mdf; Integrated Security = True";
+            string pauliaus = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\Zodziai2.mdf;Integrated Security=True;";
             string olego = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\Zodziai.mdf;Integrated Security=True";
 
             
