@@ -4,22 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
+using System.IO;	
 
 namespace GUI
 {
     public static class Speliotojas
     {
-        private static bool arNaudotiRandom = false;
-        private static List<char> atspetos_raides = new List<char>();
+		private static bool taisykleNr1 = true;
+		private static bool taisykleNr2 = true;
+		private static bool taisykleNr3 = true;
+		private static List<char> atspetos_raides = new List<char>();
         private static List<char> neatspetos_raides = new List<char>();
         private static string connectionString;
         private static string spejamasZodis;
+        private static List<string> galimiVariantai = new List<string>();
 
         static Speliotojas()
         {
             string bendras = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai.mdf; Integrated Security = True";
-            string pauliaus = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Paulius\Desktop\Gallows\GUI\GUI\Zodziai.mdf;Integrated Security=True";
+            string pauliaus = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\Zodziai.mdf;Integrated Security=True;";
             string olego = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\Zodziai.mdf;Integrated Security=True";
 
             
@@ -27,7 +30,7 @@ namespace GUI
             {
                 connectionString = olego;
             }
-            else if (Directory.Exists(@"C:\Users\Paulius\"))
+            else if (Directory.Exists(@"C:\Users\pgrig\"))
             {
                 connectionString = pauliaus;
             }
@@ -35,6 +38,22 @@ namespace GUI
             {
                 connectionString = bendras;
             }
+        }
+
+        public static void Pazadinti(string zodis)
+        {            
+            spejamasZodis = zodis;
+            string gautRaides = "exec GautZodziusPagalZodzioIlgi " + spejamasZodis.Length;
+            DataTable DT = KreiptisDuombazen(gautRaides);
+            foreach (DataRow eile in DT.Rows)
+            {
+                galimiVariantai.Add(panaikintiTarpus(eile[0].ToString()));
+            }
+			taisykleNr1 = true;
+			taisykleNr2 = true;
+			taisykleNr3 = true;
+			atspetos_raides = new List<char>();
+            neatspetos_raides = new List<char>();
         }
 
         private static string PasalintiBesikartojanciasRaides(string tekstas)
@@ -49,15 +68,24 @@ namespace GUI
 
         public static char SpekRaide()
         {
-            if(arNaudotiRandom)
-            {
-                //return IeskotiZodzio();
-                return TopXRaidziu();
-            }
-            else
-            {
-                return TopRaide();
-            }
+			if(taisykleNr1)
+			{
+				return TopRaide();
+			}
+			else if(taisykleNr2)
+			{
+				char spejimas = IeskotiZodzioSuRegex();
+				if(spejimas != '*') return spejimas;
+				else
+				{
+					taisykleNr2 = false;
+					return TopXRaidziu();
+				}
+			}
+			else
+			{
+				return TopXRaidziu();
+			}
         }
 
         private static string GautBandytosRaides()
@@ -109,25 +137,23 @@ namespace GUI
             return spejamaRaide;
         }
 
-        private static char IeskotiZodzio()
+        private static char IeskotiZodzioSuRegex()
         {
-            //pakeisti proceduros pavadinima, parametrus
-            List<string> zodziaiPagalLen = new List<string>();
-            string gautRaides = "exec GautZodziusPagalZodzioIlgi " + spejamasZodis.Length;
-            DataTable DT = KreiptisDuombazen(gautRaides);
-            foreach (DataRow eile in DT.Rows)
-            {
-                zodziaiPagalLen.Add(panaikintiTarpus(eile[0].ToString()));
-            }
             List<string> atrinktiZodziai = new List<string>();
             List<RaidesKiekis> RKlistas = new List<RaidesKiekis>();
-            bool reikalingas = true;
-            foreach (string zodis in zodziaiPagalLen) {
-                reikalingas = true;
-                foreach (char raide in neatspetos_raides) {
-                    if (zodis.Contains(raide)) { reikalingas = false; break; }
-                }
-                if(reikalingas)
+            
+            string pattern = string.Empty;
+            foreach(char c in spejamasZodis)
+            {
+                if(c == '_') 
+                    pattern+="[^"+GautBandytosRaides()+"]";
+                else
+                    pattern+=c;
+            }
+
+            foreach (string zodis in galimiVariantai) 
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(zodis, pattern))
                     atrinktiZodziai.Add(zodis);
             }
 
@@ -138,9 +164,9 @@ namespace GUI
                 apkarpytasZodis = PasalintiBesikartojanciasRaides(zodis);
                 foreach (char raide in apkarpytasZodis)
                 {
+                    rasta = false;
                     if (!atspetos_raides.Contains(raide))
                     {
-                        rasta = false;
                         foreach (RaidesKiekis rk in RKlistas)
                         {
                             if (rk.raide == raide)
@@ -150,11 +176,12 @@ namespace GUI
                                 break;
                             }
                         }
+                        if (!rasta) RKlistas.Add(new RaidesKiekis { raide = raide, kiekis = 1 });
                     }
-                    if (!rasta) RKlistas.Add(new RaidesKiekis { raide = raide, kiekis = 1 });
                 }
             }
 
+            galimiVariantai = atrinktiZodziai;
             char spejamaRaide = AtsitiktinisPagalSvertus(RKlistas);
             return spejamaRaide;
         }
@@ -175,7 +202,7 @@ namespace GUI
             else
             {
                 neatspetos_raides.Add(raide);
-                arNaudotiRandom = true;
+				taisykleNr1 = false;
             }
                 
         }
@@ -191,8 +218,6 @@ namespace GUI
             string atnaujint = "exec AtnaujintiKiekius";
             KreiptisDuombazen(irasytZodi);
             KreiptisDuombazen(atnaujint);
-            atspetos_raides = new List<char>();
-            neatspetos_raides = new List<char>();
         }
 
         private static DataTable KreiptisDuombazen(string komanda)
