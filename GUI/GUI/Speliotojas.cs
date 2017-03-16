@@ -22,9 +22,9 @@ namespace GUI
         /*
         static Speliotojas()
         {
-            string bendras = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai.mdf; Integrated Security = True";
-            string pauliaus = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\Zodziai.mdf;Integrated Security=True;";
-            string olego = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename='C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\Zodziai2.mdf';Integrated Security=True";
+            string bendras = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Zodziai2.mdf; Integrated Security = True";
+            string pauliaus = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\pgrig\Desktop\Intelektika\GUI\GUI\Zodziai2.mdf;Integrated Security=True;";
+            string olego = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Wegis\Documents\visual studio 2015\Projects\GUI\GUI\GUI\Zodziai.mdf;Integrated Security=True";
 
             
             if (Directory.Exists(@"C:\Users\Wegis\"))
@@ -218,7 +218,7 @@ namespace GUI
             string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'";
             string atnaujint = "exec AtnaujintiKiekius";
             KreiptisDuombazen(irasytZodi);
-            KreiptisDuombazen(atnaujint);
+            //KreiptisDuombazen(atnaujint);
         }
 
         private static DataTable KreiptisDuombazen(string komanda)
