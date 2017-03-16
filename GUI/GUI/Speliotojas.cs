@@ -218,7 +218,7 @@ namespace GUI
             string irasytZodi = "exec IterptZodiIrSekme "+ pasisekimas + ", N'" + spejamasZodis + "'";
             string atnaujint = "exec AtnaujintiKiekius";
             KreiptisDuombazen(irasytZodi);
-            KreiptisDuombazen(atnaujint);
+            //KreiptisDuombazen(atnaujint);
         }
 
         private static DataTable KreiptisDuombazen(string komanda)
